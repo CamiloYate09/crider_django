@@ -1,0 +1,9 @@
+Django:8000
+PostgreSQL: 5432
+Redis: 6379
+Celery: 5555 (Flower)
+
+1: docker-compose -f local.yml build -> Contruir las imagenes
+2: docker images -> saber que esta instalado
+3: docker-compose -f local.yml up -> subir todo los contenedores
+4: docker-compose -f local.yml ps -> Saber todos los procesos corriendo
