@@ -7,3 +7,108 @@ Celery: 5555 (Flower)
 2: docker images -> saber que esta instalado
 3: docker-compose -f local.yml up -> subir todo los contenedores
 4: docker-compose -f local.yml ps -> Saber todos los procesos corriendo
+5: docker-compose -f local.yml down -> detener nuestra aplicación
+
+-----Nota 1----
+Cuando se suba las imagenes de la redis molesta se debe cambiar en el archivo base.txt las siguientes dependencias
+redis>=3.2.0
+django-redis==4.10.0
+celery==4.2.1
+tornado>=5.0.0,<6.0.0
+flower==0.9.5
+
+--
+argon2-cffi==20.1.0
+
+Luego de esta modificación ejecutar:
+
+    export COMPOSE_FILE=local.yml
+    docker-compose up --build
+
+-----Nota 1----
+
+6:Crear el super usuario
+export COMPOSE_FILE=local.yml
+docker-compose run --rm django python manage.py createsuperuser
+o este otro comando -> docker-compose -f local.yml run --rm django python manage.py createsuperuser
+
+7: Habilitar Debugger
+docker-compose up
+docker-compose ps
+docker rm -f <ID> -> Ejemplo (docker rm -f cride_django_1)
+desde la terminal de GIT:
+*export COMPOSE_FILE=local.yml
+*docker-compose run --rm --service-ports django
+
+
+------ Nota 2 ----
+Comandos por defecto de Docker
+*docker container
+*docker images
+*docker volume
+*docker network
+------ Nota 2 ----
+
+
+--Migraciones
+
+*docker-compose run --rm django python manage.py makemigrations
+Luego
+*docker-compose run --rm --service-ports django
+--lo más seguro es que el nuevo modelo no permite el cambio en la base de datos por eso debemos bajar el volumen de la base de datos
+es decir borrarlo
+-> * docker volume ls (listas todos los volumenes)
+-> * docker volume rm cride_local_postgres_data
+Ahora debemos crear nuestro superUser con los nuevos campos del modelo
+
+export COMPOSE_FILE=local.yml
+docker-compose run --rm django python manage.py createsuperuser
+-- Nota si lo ejecutas en el bash de git agrega esto : * winpty docker-compose run --rm django python manage.py createsuperuser
+
+
+Nuevo comando
+docker-compose run --rm django python manage.py makemigrations
+docker-compose run --rm django python manage.py migrate
+siempre que se crea un modelo se debe correr los anteriores comando luego
+subir las imagenes y en otra terminar matar el proceso de django y volverlo a ejecutar solo y luego crear de nuevo el superUsuario
+winpty docker-compose run --rm django python manage.py createsuperuser
+
+
+django_extensions -> docker-compose run --rm django python manage.py shell_plus
+
+
+----------------------- Hacer Peticiones a Api Rest HTTP
+*https://httpie.io/
+comando para que solo nos de el body
+http localhost:8000/circles -b
+- verboso
+http localhost:8000/circles -v
+por defecto es un petición Get
+
+----------------------- Hacer Peticiones a Api Rest HTTP
+
+
+-----------------Instalar Django REST Framework
+#Django REST Framework
+djangorestframework==3.12.2
+lo ponemos en las dependencias del archivo base.txt -> y debemos contruir de nuevo el contenedor
+*docker-compose down
+*docker-compose build
+*docker-compose up
+Hola!, encontré esta “regla de oro” para la cuestión de las vistas , por si te estas sumergiendo en django -REST y no sabes que tipo de vista usar:
++ViewSet: cuando usamos la mayoria de operaciones crud en un modelo
+
++Generics: cuando solo desee permitir algunas operaciones en un modelo
+
++ApiView :cuando desee personalizar completamente las operaciones de un modelo.
+
+espero les sirva como una guia , mas no una regla
+
+*https://github.com/encode/django-rest-framework y la extension Octotree
+
+
+
+
+
+
+
