@@ -1,3 +1,13 @@
+/**
+Comandos Iniciales para Arrancar el Docker con todos los servicios
+1- Ingresar al path del proyecto y abrir Git
+2- exportar la configuracion por defecto (export COMPOSE_FILE=local.yml)
+3- Correr los servicios (docker-compose up)
+4- Visualizar el servicio de django y matarlo para abrirlo en otra consola. (docker-compose ps /docker rm -f <ID> -> Ejemplo (docker rm -f cride_django_1) )
+5- Subir solo el servicio de Django (docker-compose run --rm --service-ports django)
+
+**/
+
 Django:8000
 PostgreSQL: 5432
 Redis: 6379
